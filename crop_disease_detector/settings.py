@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-6y0s!i0l8ua%p6fzvb0w%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['your-heroku-app-name.herokuapp.com', '127.0.0.1', 'localhost', 'mrcrop.wuaze.com']
+ALLOWED_HOSTS = ['your-heroku-app-name.herokuapp.com', '127.0.0.1', 'localhost', 'mrcrop.wuaze.com', 'mrcrop.onrender.com']
 
 # Application definition
 
@@ -45,14 +45,12 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',  # Make sure this is present
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
 
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5500",  # Add your web app's URL here
