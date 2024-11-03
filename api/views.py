@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 try:
     interpreter = tf.lite.Interpreter(model_path=os.path.join(os.path.dirname(__file__), '..', 'model.tflite'))
     interpreter.allocate_tensors()
+    logger.info("TensorFlow Lite model loaded successfully.")
 except Exception as e:
     logger.error("Error loading model: %s", e)
 
@@ -21,11 +22,13 @@ except Exception as e:
 try:
     with open(os.path.join(os.path.dirname(__file__), '..', 'diseases.json')) as f:
         diseases_data = json.load(f)
+    logger.info("Diseases dataset loaded successfully.")
 except Exception as e:
     logger.error("Error loading diseases data: %s", e)
     diseases_data = {"diseases": []}  # Fallback to empty data
 
 def home(request):
+    logger.info("Home view accessed.")
     return HttpResponse("<h1>Welcome to the Crop Disease Detector!</h1>")
 
 @csrf_exempt  # To allow POST requests without CSRF token
@@ -33,6 +36,7 @@ def predict(request):
     if request.method == 'POST' and 'file' in request.FILES:
         file = request.FILES['file']
         try:
+            logger.info("Received file for prediction: %s", file.name)
             # Open and preprocess the image
             image = Image.open(file).convert("RGB")
             image = image.resize((224, 224))  # Resize to match model input size
@@ -49,10 +53,13 @@ def predict(request):
             predictions = interpreter.get_tensor(output_details[0]['index'])
 
             predicted_class = np.argmax(predictions, axis=1)[0]
+            logger.info("Prediction made: Class index %d", predicted_class)
 
             # Define class labels
             classes = ["Healthy", "NotPlant", "Powdery", "Rust"]
             result = classes[predicted_class]
+            logger.info("Predicted class: %s", result)
+
             disease_info = next((disease for disease in diseases_data["diseases"] if disease["name"] == result), None)
 
             return JsonResponse({"status": "success", "prediction": result, "info": disease_info})
@@ -60,4 +67,5 @@ def predict(request):
             logger.error("Error processing the image: %s", e)
             return JsonResponse({"status": "error", "message": "Error processing the image: " + str(e)}, status=500)
     
+    logger.warning("Invalid request to predict endpoint.")
     return JsonResponse({"status": "error", "message": "Invalid request"}, status=400)
