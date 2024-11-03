@@ -6,6 +6,7 @@ from PIL import Image
 import json
 import os
 import logging
+from django.shortcuts import render
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -29,8 +30,7 @@ except Exception as e:
 
 def home(request):
     logger.info("Home view accessed.")
-    return HttpResponse("<h1>Welcome to the Crop Disease Detector!</h1>")
-
+    return render(request, 'index.html')
 @csrf_exempt  # To allow POST requests without CSRF token
 def predict(request):
     if request.method == 'POST' and 'file' in request.FILES:
