@@ -56,7 +56,7 @@ def predict(request):
             logger.info("Prediction made: Class index %d", predicted_class)
 
             # Define class labels
-            classes = ["Healthy", "NotPlant", "Powdery", "Rust"]
+            classes = ["Healthy", "NotPlant", "Powdery Mildew", "Rust"]
             result = classes[predicted_class]
             logger.info("Predicted class: %s", result)
 
