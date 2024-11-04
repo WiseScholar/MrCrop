@@ -49,12 +49,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 
 CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:5500",  # Add your web app's URL here
-    "http://localhost:5500",
+    "http://127.0.0.1:10000",  # Add your web app's URL here
+    "http://localhost:10000",
     "https://mrcrop.wuaze.com"
 ]
 
